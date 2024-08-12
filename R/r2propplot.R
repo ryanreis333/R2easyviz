@@ -9,13 +9,13 @@
 #'
 #' @examples r2propplot()
 #'
-r2propplot2 <- function(seurat_object, celltype, orig.ident) {
+r2propplot <- function(seurat_object, celltype, orig.ident, disease) {
 
   # Extract metadata from the Seurat object
   meta <- seurat_object[[]]
 
   # Select relevant columns based on the arguments
-  meta <- meta[, c(celltype, orig.ident)]
+  meta <- meta[, c(celltype, orig.ident, disease)]
 
   # Group, summarize, and calculate proportions
   prop_data <- meta %>%
