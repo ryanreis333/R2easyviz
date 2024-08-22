@@ -10,7 +10,7 @@ install.packages("devtools")
 devtools::install_github("ryanreis333/R2easyviz")
 ```
 
-![Logo](images/HGNC_image.png)
+![Logo](images/Example_image.png)
 
 #### The package relies on the ggplot2, dplyr, stringr, and Seurat packages.
 
