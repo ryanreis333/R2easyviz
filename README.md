@@ -1,4 +1,4 @@
-# R2easyviz is a package intended to provide an easy and quick functions for plotting single cell data in Seurat.
+# R2easyviz is a package intended to provide easy and quick functions for plotting single cell data in Seurat.
 
 #### The movation for this package comes from types of plots that I create everyday while working with single cell projects. Rather than going through the work to manipulate the data of interest each time, R2easyviz provides an easy way to access data of interest, organize it in a meaningful way, and plot the results, all from the basic Seurat structure.
 
