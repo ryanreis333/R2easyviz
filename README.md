@@ -16,7 +16,7 @@ devtools::install_github("ryanreis333/R2easyviz")
 
 #### If there is any issues with loading these packages alongside R2easyviz, you can download them all by running the following:
 ```r
-install.packages(c("ggplot2", "dplyr", "stringr", "Seurat")
+install.packages(c("ggplot2", "dplyr", "stringr", "Seurat"))
 ```
 
 #### Alternatively, you can download them each individually with the following:
