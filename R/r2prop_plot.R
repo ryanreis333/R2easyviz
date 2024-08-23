@@ -29,14 +29,18 @@ r2prop_plot <- function(seurat_object, celltype = Idents(seurat_object), orig.id
   # Select relevant columns based on the arguments
   meta <- meta[, c(celltype, orig.ident)]
 
-  # Group, summarize, and calculate proportions
+  # Group, summarize, and calculate proportions within each sample (orig.ident)
   prop_data <- meta %>%
     group_by(.data[[orig.ident]], .data[[celltype]]) %>%
     summarise(count = n(), .groups = 'drop') %>%
+    group_by(.data[[orig.ident]]) %>%
     mutate(proportion = count / sum(count) * 100)
 
   # Plot the data using ggplot2
   ggplot(prop_data, aes(x = .data[[orig.ident]], y = proportion, fill = .data[[celltype]])) +
     geom_bar(stat = "identity") +
-    labs(y = "Proportion (%)", x = "", fill = "Celltype")
+    labs(y = "Proportion (%)", x = "", fill = "Celltype") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
+
