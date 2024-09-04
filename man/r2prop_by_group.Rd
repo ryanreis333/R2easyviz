@@ -8,21 +8,42 @@ r2prop_by_group(
   seurat_object,
   celltype = Idents(seurat_object),
   group = "group",
-  orig.ident = "orig.ident"
+  orig.ident = "orig.ident",
+  pvalue_cutoff = 0.05
 )
 }
 \arguments{
-\item{seurat_object}{A Seurat object containing the data to be plotted.}
+\item{seurat_object}{A Seurat object containing the data to be plotted. The object should include metadata columns corresponding to the cell types, grouping, and sample identifiers.}
 
-\item{celltype}{A string specifying the column name for cell types.}
+\item{celltype}{A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses `Idents(seurat_object)` which refers to the identities of the cells.}
 
-\item{group}{A string specifying the column name for grouping.}
+\item{group}{A string specifying the column name in the Seurat object's metadata that contains the grouping factor for comparing proportions.}
 
-\item{orig.ident}{A string specifying the column name for sample identifiers.}
+\item{orig.ident}{A string specifying the column name in the Seurat object's metadata that contains the sample identifiers or conditions by which the data should be split. The default is "orig.ident".}
+
+\item{pvalue_cutoff}{A numeric value specifying the cutoff for statistical significance. Default is 0.05.}
 }
 \value{
-A ggplot object that visualizes the grouped bar plot with individual sample points.
+A list containing:
+\item{plot}{A ggplot object that visualizes the grouped bar plot with individual sample points. The x-axis represents cell types, the y-axis represents the proportion of each category, and the bars are colored by group. Individual sample points are overlaid on the bars, and asterisks indicate statistical significance.}
+\item{stats_results}{A data frame containing the p-values and significance markers for each cell type based on the statistical tests performed.}
 }
 \description{
-Grouped Bar Plot with Individual Sample Points for Seurat Object
+This function generates a grouped bar plot showing the proportion of each cell type across different groups, with individual sample points and significance markers. It calculates proportions, performs statistical tests (one-way ANOVA or t-test), and adds significance markers to the plot.
+}
+\examples{
+# Assuming 'seurat_obj' is a Seurat object with default metadata columns
+result <- r2prop_by_group(seurat_object = seurat_obj)
+print(result$plot)  # Display the plot
+print(result$stats_results)  # Display the statistical results
+
+# Example with specified metadata columns
+result <- r2prop_by_group(seurat_object = seurat_obj, celltype = "cell_type", group = "group", orig.ident = "sample_name")
+print(result$plot)  # Display the plot
+print(result$stats_results)  # Display the statistical results
+
+# Example with different p-value cutoff
+result <- r2prop_by_group(seurat_object = seurat_obj, pvalue_cutoff = 0.01)
+print(result$plot)  # Display the plot
+print(result$stats_results)  # Display the statistical results
 }

@@ -1,16 +1,17 @@
 Package: R2easyviz
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Provides a host of functions to quickly and easily make seurat-compatible plots.
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author@R: person("Ryan", "Reis", email = "ryanreis333@gmail.com", role = c("aut", "cre"))
+Description: Provides a host of functions to quickly and easily make seurat-compatible plots. Choose
+ your Seurat object and the metadata of interest, and plot away!
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
-Imports:
-    ggplot2,
+Depends: R (>= 4.0.0)
+Imports: 
+    Seurat,
     dplyr,
+    ggplot2,
     stringr
+RoxygenNote: 7.3.2
