@@ -32,7 +32,7 @@
 #' result <- r2prop_by_group(seurat_object = seurat_obj, pvalue_cutoff = 0.01)
 #' print(result$plot)  # Display the plot
 #' print(result$stats_results)  # Display the statistical results
-r2prop_by_group <- function(seurat_object, celltype = Idents(seurat_object), group = "group", orig.ident = "orig.ident", pvalue_cutoff = 0.05) {
+r2prop_by_group <- function(seurat_object, celltype = "celltype", group = "group", orig.ident = "orig.ident", pvalue_cutoff = 0.05) {
 
   # Load necessary libraries
   library(dplyr)

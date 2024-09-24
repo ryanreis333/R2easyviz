@@ -6,7 +6,7 @@
 \usage{
 r2prop_plot(
   seurat_object,
-  celltype = Idents(seurat_object),
+  celltype = "celltype",
   orig.ident = "orig.ident",
   reorder = FALSE
 )
@@ -14,7 +14,7 @@ r2prop_plot(
 \arguments{
 \item{seurat_object}{A Seurat object containing the data to be plotted. The object should include metadata columns corresponding to the cell types and sample identifiers.}
 
-\item{celltype}{A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses `Idents(seurat_object)` which refers to the identities of the cells.}
+\item{celltype}{A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses "celltype" which refers to the identities of the cells.}
 
 \item{orig.ident}{A string specifying the column name in the Seurat object's metadata that contains the sample identifiers or conditions by which the data should be split. The default is "orig.ident".}
 

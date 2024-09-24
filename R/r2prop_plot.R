@@ -3,7 +3,7 @@
 #' This function generates a bar plot showing the proportion of each cell type or specified metadata category across different samples or conditions from a Seurat object. By default, it uses the identities of the cells and the "orig.ident" column for grouping and splitting. Optionally, you can reorder the samples based on the proportion of the most dominant cell type.
 #'
 #' @param seurat_object A Seurat object containing the data to be plotted. The object should include metadata columns corresponding to the cell types and sample identifiers.
-#' @param celltype A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses `Idents(seurat_object)` which refers to the identities of the cells.
+#' @param celltype A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses "celltype" which refers to the identities of the cells.
 #' @param orig.ident A string specifying the column name in the Seurat object's metadata that contains the sample identifiers or conditions by which the data should be split. The default is "orig.ident".
 #' @param reorder A logical value indicating whether to reorder the samples based on the proportion of the most dominant cell type. If `TRUE`, samples will be reordered; if `FALSE` (default), the original order will be used.
 #'
@@ -26,7 +26,7 @@
 #' @import ggplot2
 #' @import dplyr
 
-r2prop_plot <- function(seurat_object, celltype = Idents(seurat_object), orig.ident = "orig.ident", reorder = FALSE) {
+r2prop_plot <- function(seurat_object, celltype = "celltype", orig.ident = "orig.ident", reorder = FALSE) {
 
   # Extract metadata from the Seurat object
   meta <- seurat_object[[]]

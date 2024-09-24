@@ -6,7 +6,7 @@
 \usage{
 r2prop_by_group(
   seurat_object,
-  celltype = Idents(seurat_object),
+  celltype = "celltype",
   group = "group",
   orig.ident = "orig.ident",
   pvalue_cutoff = 0.05

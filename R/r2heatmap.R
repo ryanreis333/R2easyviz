@@ -70,10 +70,10 @@ r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncel
 
   # Create heatmap with optional Viridis color scale
   if (viridis_color) {
-    plot <- DoHeatmap(object = seurat_obj, features = heatmap.markers, cells = df_barcodes[[barcode_column]], label = FALSE) +
+    plot <- DoHeatmap(object = seurat_obj, features = heatmap.markers, cells = df_barcodes[[barcode_column]], label = FALSE, group.by = group_by) +
       scale_fill_gradientn(colors = viridis(100))
   } else {
-    plot <- DoHeatmap(object = seurat_obj, features = heatmap.markers, cells = df_barcodes[[barcode_column]], label = FALSE)
+    plot <- DoHeatmap(object = seurat_obj, features = heatmap.markers, cells = df_barcodes[[barcode_column]], label = FALSE, group.by = group_by)
   }
 
   return(plot)
