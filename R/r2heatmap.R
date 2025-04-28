@@ -80,8 +80,7 @@ r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncel
   # If group_colors is provided, apply it
   if (!is.null(group_colors)) {
     plot <- plot +
-      ggplot2::scale_color_manual(values = group_colors) +
-      ggplot2::scale_fill_manual(values = group_colors)  # in case Seurat uses fill for group annotations
+      ggplot2::scale_color_manual(values = group_colors)
   }
 
   return(plot)
