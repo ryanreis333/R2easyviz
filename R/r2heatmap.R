@@ -27,7 +27,15 @@
 #' @importFrom Seurat ScaleData DoHeatmap
 #' @importFrom viridis viridis
 #'
-r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncells = 500, viridis_color = TRUE, nfeatures = 5, arrange_by = "dif", barcode_column = "barcodes", group_colors = NULL) {
+r2heatmap <- function(seurat_obj,
+                      FindAllMarkersObj,
+                      group_by = "celltype",
+                      ncells = 500,
+                      viridis_color = TRUE,
+                      nfeatures = 5,
+                      arrange_by = "dif",
+                      barcode_column = "barcodes",
+                      group_colors = NULL) {
 
   # Ensure FindAllMarkersObj is a data frame
   if (!is.data.frame(FindAllMarkersObj)) {
@@ -51,7 +59,7 @@ r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncel
     if (arrange_by == "dif" && all(c("pct.1", "pct.2") %in% colnames(FindAllMarkersObj))) {
       FindAllMarkersObj <- FindAllMarkersObj %>%
         mutate(dif = pct.1 - pct.2)
-      arrange_by <- "dif"  # Ensure we're using the newly created 'dif' column
+      arrange_by <- "dif"
     } else {
       stop(paste("Column", arrange_by, "not found in 'FindAllMarkersObj' and cannot calculate 'dif' column."))
     }
@@ -69,18 +77,19 @@ r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncel
   # Scale data for the selected features
   seurat_obj <- ScaleData(seurat_obj, features = heatmap.markers)
 
-  # Create heatmap with optional Viridis color scale
-  if (viridis_color) {
-    plot <- DoHeatmap(object = seurat_obj, features = heatmap.markers, cells = df_barcodes[[barcode_column]], label = FALSE, group.by = group_by) +
-      scale_fill_gradientn(colors = viridis(100))
-  } else {
-    plot <- DoHeatmap(object = seurat_obj, features = heatmap.markers, cells = df_barcodes[[barcode_column]], label = FALSE, group.by = group_by)
-  }
+  # Create heatmap
+  plot <- DoHeatmap(
+    object = seurat_obj,
+    features = heatmap.markers,
+    cells = df_barcodes[[barcode_column]],
+    label = FALSE,
+    group.by = group_by,
+    group.colors = group_colors  # <-- Pass group_colors directly here!
+  )
 
-  # If group_colors is provided, apply it
-  if (!is.null(group_colors)) {
-    plot <- plot +
-      ggplot2::scale_color_manual(values = group_colors)
+  # Apply optional Viridis color scale for expression values
+  if (viridis_color) {
+    plot <- plot + scale_fill_gradientn(colors = viridis(100))
   }
 
   return(plot)
