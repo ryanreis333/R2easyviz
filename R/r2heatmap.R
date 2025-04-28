@@ -10,7 +10,8 @@
 #' @param nfeatures An integer specifying the number of top marker genes to include in the heatmap per cluster. Default is `5`.
 #' @param arrange_by A character string specifying the column name in `FindAllMarkersObj` used for ordering marker genes. If `"dif"`, and the `dif` column is not present, it will be calculated as the difference between `pct.1` and `pct.2`. Default is `"dif"`.
 #' @param barcode_column A character string specifying the column name in the metadata that contains barcode information. Default is `"barcodes"`.
-#'
+#' @param group_colors An optional named vector specifying manual colors for `group_by` groups. Names must match the group names exactly. Default is `NULL`.
+
 #' @return A `ggplot` object representing the heatmap of the selected marker genes.
 #' @export
 #'
@@ -26,7 +27,7 @@
 #' @importFrom Seurat ScaleData DoHeatmap
 #' @importFrom viridis viridis
 #'
-r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncells = 500, viridis_color = TRUE, nfeatures = 5, arrange_by = "dif", barcode_column = "barcodes") {
+r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncells = 500, viridis_color = TRUE, nfeatures = 5, arrange_by = "dif", barcode_column = "barcodes", group_colors = NULL) {
 
   # Ensure FindAllMarkersObj is a data frame
   if (!is.data.frame(FindAllMarkersObj)) {
@@ -74,6 +75,13 @@ r2heatmap <- function(seurat_obj, FindAllMarkersObj, group_by = "celltype", ncel
       scale_fill_gradientn(colors = viridis(100))
   } else {
     plot <- DoHeatmap(object = seurat_obj, features = heatmap.markers, cells = df_barcodes[[barcode_column]], label = FALSE, group.by = group_by)
+  }
+
+  # If group_colors is provided, apply it
+  if (!is.null(group_colors)) {
+    plot <- plot +
+      ggplot2::scale_color_manual(values = group_colors) +
+      ggplot2::scale_fill_manual(values = group_colors)  # in case Seurat uses fill for group annotations
   }
 
   return(plot)
