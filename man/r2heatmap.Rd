@@ -12,7 +12,8 @@ r2heatmap(
   viridis_color = TRUE,
   nfeatures = 5,
   arrange_by = "dif",
-  barcode_column = "barcodes"
+  barcode_column = "barcodes",
+  group_colors = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ r2heatmap(
 \item{arrange_by}{A character string specifying the column name in `FindAllMarkersObj` used for ordering marker genes. If `"dif"`, and the `dif` column is not present, it will be calculated as the difference between `pct.1` and `pct.2`. Default is `"dif"`.}
 
 \item{barcode_column}{A character string specifying the column name in the metadata that contains barcode information. Default is `"barcodes"`.}
+
+\item{group_colors}{An optional named vector specifying manual colors for `group_by` groups. Names must match the group names exactly. Default is `NULL`.}
 }
 \value{
 A `ggplot` object representing the heatmap of the selected marker genes.

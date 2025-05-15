@@ -7,7 +7,7 @@
 r2prop_plot(
   seurat_object,
   celltype = "celltype",
-  orig.ident = "orig.ident",
+  group.by = "orig.ident",
   reorder = FALSE
 )
 }
@@ -16,7 +16,7 @@ r2prop_plot(
 
 \item{celltype}{A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses "celltype" which refers to the identities of the cells.}
 
-\item{orig.ident}{A string specifying the column name in the Seurat object's metadata that contains the sample identifiers or conditions by which the data should be split. The default is "orig.ident".}
+\item{group.by}{A string specifying the column name in the Seurat object's metadata that contains the sample identifiers or conditions by which the data should be split. The default is "orig.ident".}
 
 \item{reorder}{A logical value indicating whether to reorder the samples based on the proportion of the most dominant cell type. If `TRUE`, samples will be reordered; if `FALSE` (default), the original order will be used.}
 }
@@ -31,12 +31,12 @@ This function generates a bar plot showing the proportion of each cell type or s
 r2prop_plot(seurat_object = seurat_obj)
 
 # Example with specified metadata columns
-r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", orig.ident = "sample_name")
+r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", group.by = "sample_name")
 
 # Example with different metadata
-r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", orig.ident = "condition")
+r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", group.by = "condition")
 
 # Example with reordered samples
-r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", orig.ident = "sample_name", reorder = TRUE)
+r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", group.by = "sample_name", reorder = TRUE)
 
 }
