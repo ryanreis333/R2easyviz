@@ -13,34 +13,41 @@ r2subset_markers(
 )
 }
 \arguments{
-\item{markers.result}{A data frame or tibble containing marker gene results. This should include columns for clusters and the metric to arrange by.}
+\item{markers.result}{A data frame containing marker gene results (e.g., from `FindAllMarkers`).}
 
-\item{arrange_by}{A character string specifying the column name in `markers.result` that contains the metric for ordering the marker genes (e.g., "p_val", "avg_logFC", "dif"). Default is `"dif"`.}
+\item{arrange_by}{A string for the column to order genes by (e.g., `"p_val"`, `"avg_logFC"`).
+If `"dif"`, it's calculated as `pct.1 - pct.2`. Default is `"dif"`.}
 
-\item{nfeatures}{An integer specifying the number of top marker genes to select per cluster. Default is 10.}
+\item{nfeatures}{An integer for the number of top genes to select per cluster. Default is 10.}
 
-\item{clusters}{A character string specifying the column name in `markers.result` that contains the cluster identifiers. Default is `"cluster"`.}
+\item{clusters}{A string for the column with cluster identifiers. Default is `"cluster"`.}
 
-\item{order}{A character string indicating whether to sort in `"increasing"` or `"decreasing"` order. Default is `"decreasing"`.}
+\item{order}{A string for sorting order: `"increasing"` or `"decreasing"`. Default is `"decreasing"`.}
 }
 \value{
-A data frame or tibble with the top marker genes for each cluster based on the specified metric.
+A data frame with the top marker genes for each cluster.
 }
 \description{
-The `r2subset_markers` function subsets marker genes by selecting the top `nfeatures` based on a specified ranking metric.
-The function groups marker genes by cluster and orders them within each cluster according to the chosen metric
-(e.g., differential expression). If the specified metric is `"dif"` and the necessary columns (`pct.1` and `pct.2`)
-are present, it calculates `dif` as the difference between `pct.1` and `pct.2`.
-The function returns a subset of the top marker genes for each cluster.
+The `r2subset_markers` function subsets marker genes from a data frame,
+selecting the top `nfeatures` based on a specified ranking metric.
 }
 \examples{
-# Subset the top 10 marker genes by differential expression from a result data frame
-top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "avg_logFC", nfeatures = 10)
+\dontrun{
+# Create a dummy marker results data frame
+markers_df <- data.frame(
+  cluster = rep(c("Cluster1", "Cluster2"), each = 20),
+  gene = paste0("Gene", 1:40),
+  avg_logFC = rnorm(40, 0.8, 0.3),
+  pct.1 = runif(40, 0.4, 0.8),
+  pct.2 = runif(40, 0.1, 0.5),
+  p_val_adj = runif(40, 0, 0.05)
+)
 
-# Subset the top 5 marker genes based on p-value (increasing order)
-top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "p_val", nfeatures = 5, order = "increasing")
+# Subset top 5 markers by avg_logFC
+top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "avg_logFC", nfeatures = 5)
 
-# Subset the top 10 marker genes based on a custom 'dif' metric, calculated as pct.1 - pct.2
-top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "dif", nfeatures = 10)
+# Subset top 10 markers by 'dif'
+top_dif_markers <- r2subset_markers(markers.result = markers_df, nfeatures = 10)
+}
 
 }

@@ -4,12 +4,7 @@
 \alias{r2sample_seurat}
 \title{Downsample Seurat Object by Group}
 \usage{
-r2sample_seurat(
-  seurat_obj,
-  group_var = "orig.ident",
-  n = 500,
-  barcode_column = "barcodes"
-)
+r2sample_seurat(seurat_obj, group_var = "orig.ident", n = 500)
 }
 \arguments{
 \item{seurat_obj}{A Seurat object containing the single-cell RNA-seq data.}
@@ -17,8 +12,6 @@ r2sample_seurat(
 \item{group_var}{A character string representing the metadata column used to define the groups for sampling. Default is `"orig.ident"`.}
 
 \item{n}{An integer specifying the number of cells to sample from each group. Default is 500.}
-
-\item{barcode_column}{A character string representing the column in the Seurat metadata that contains the cell barcodes. Default is `"barcodes"`.}
 }
 \value{
 A downsampled Seurat object containing the specified number of cells from each group.
@@ -29,10 +22,16 @@ a specified number of cells (`n`) from each group defined by a metadata variable
 The function returns a new Seurat object containing only the sampled cells.
 }
 \examples{
-# Downsample 100 cells from each sample group defined by `orig.ident`
-pbmc.sample <- r2_sample_seurat(seurat_obj = pbmc, group_var = "orig.ident", n = 100)
+\dontrun{
+# To create a dummy Seurat object for testing
+pbmc_data <- matrix(rnorm(1000 * 20), nrow = 1000)
+rownames(pbmc_data) <- paste0("Gene-", 1:1000)
+colnames(pbmc_data) <- paste0("Cell-", 1:20)
+seurat_obj <- CreateSeuratObject(counts = pbmc_data)
+seurat_obj$orig.ident <- sample(c("SampleA", "SampleB"), 20, replace = TRUE)
 
-# Downsample 200 cells using a custom grouping variable and barcode column
-seurat_downsampled <- r2sample_seurat(seurat_obj = my_seurat, group_var = "sample_id", n = 200, barcode_column = "cell_ids")
+# Downsample 10 cells from each sample group defined by `orig.ident`
+pbmc_sampled <- r2sample_seurat(seurat_obj = seurat_obj, group_var = "orig.ident", n = 10)
+}
 
 }

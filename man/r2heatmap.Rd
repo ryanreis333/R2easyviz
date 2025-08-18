@@ -12,40 +12,48 @@ r2heatmap(
   viridis_color = TRUE,
   nfeatures = 5,
   arrange_by = "dif",
-  barcode_column = "barcodes",
   group_colors = NULL
 )
 }
 \arguments{
-\item{seurat_obj}{A `Seurat` object containing the single-cell RNA-seq data. This object should include metadata with cell grouping information.}
+\item{seurat_obj}{A Seurat object.}
 
-\item{FindAllMarkersObj}{A data frame or tibble containing the results from `FindAllMarkers`, which includes information about marker genes. This should have columns for gene names, clusters, and the metric used for ranking.}
+\item{FindAllMarkersObj}{A data frame from `FindAllMarkers` containing marker genes.}
 
-\item{group_by}{A character string specifying the metadata column used for grouping cells in the heatmap. Default is `"celltype"`.}
+\item{group_by}{A metadata column to group cells by in the heatmap. Default is `"celltype"`.}
 
-\item{ncells}{An integer specifying the number of cells to sample per group for the heatmap. If `ncells` is greater than the minimum number of cells in any group, it will be adjusted to the minimum. Default is `500`.}
+\item{ncells}{An integer for the number of cells to sample per group. Default is 500.}
 
-\item{viridis_color}{A logical value indicating whether to use the Viridis color scale for the heatmap. If `TRUE`, the Viridis color scale will be applied; otherwise, a default color scale will be used. Default is `TRUE`.}
+\item{viridis_color}{A logical indicating whether to use the Viridis color scale. Default is `TRUE`.}
 
-\item{nfeatures}{An integer specifying the number of top marker genes to include in the heatmap per cluster. Default is `5`.}
+\item{nfeatures}{An integer for the number of top marker genes per cluster to show. Default is 5.}
 
-\item{arrange_by}{A character string specifying the column name in `FindAllMarkersObj` used for ordering marker genes. If `"dif"`, and the `dif` column is not present, it will be calculated as the difference between `pct.1` and `pct.2`. Default is `"dif"`.}
+\item{arrange_by}{A column name in `FindAllMarkersObj` to order genes by.
+If `"dif"`, it's calculated as `pct.1 - pct.2`. Default is `"dif"`.}
 
-\item{barcode_column}{A character string specifying the column name in the metadata that contains barcode information. Default is `"barcodes"`.}
-
-\item{group_colors}{An optional named vector specifying manual colors for `group_by` groups. Names must match the group names exactly. Default is `NULL`.}
+\item{group_colors}{An optional named vector for custom group colors.}
 }
 \value{
-A `ggplot` object representing the heatmap of the selected marker genes.
+A `ggplot` object representing the heatmap.
 }
 \description{
-The `r2heatmap` function creates a heatmap of the top marker genes for a given `Seurat` object. It allows you to visualize the expression of selected marker genes across cells, with options for color scaling and grouping. The function includes checks for column existence and dynamically adjusts the number of cells sampled based on the available data.
+The `r2heatmap` function creates a heatmap of top marker genes from a Seurat object.
+It visualizes the expression of selected markers across a downsampled set of cells,
+with options for custom colors and grouping.
 }
 \examples{
-# Generate a heatmap for the top 5 marker genes, using the Viridis color scale
-heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df, group_by = "celltype", nfeatures = 5)
+\dontrun{
+# To create a dummy Seurat object for testing
+pbmc_data <- matrix(rnorm(1000 * 20), nrow = 1000)
+rownames(pbmc_data) <- paste0("Gene-", 1:1000)
+colnames(pbmc_data) <- paste0("Cell-", 1:20)
+seurat_obj <- CreateSeuratObject(counts = pbmc_data)
+seurat_obj$celltype <- sample(c("T-cell", "B-cell"), 20, replace = TRUE)
+Idents(seurat_obj) <- seurat_obj$celltype
+markers_df <- FindAllMarkers(seurat_obj, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
 
-# Generate a heatmap for the top 10 marker genes, without using the Viridis color scale
-heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df, group_by = "celltype", nfeatures = 10, viridis_color = FALSE)
+# Generate a heatmap
+r2heatmap(seurat_obj, FindAllMarkersObj = markers_df, group_by = "celltype")
+}
 
 }

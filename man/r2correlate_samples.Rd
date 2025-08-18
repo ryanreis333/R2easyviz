@@ -8,43 +8,47 @@ r2correlate_samples(
   seurat_obj,
   group_by = "orig.ident",
   assay = "RNA",
-  return_heatmap = T
+  return_heatmap = TRUE
 )
 }
 \arguments{
-\item{seurat_obj}{A Seurat object containing the single-cell RNA-seq data.}
+\item{seurat_obj}{A Seurat object.}
 
-\item{group_by}{A character string specifying the metadata column in the Seurat object to group cells by.
-This can be a column like `"orig.ident"` or any other metadata column in `seurat_obj@meta.data`.}
+\item{group_by}{A character string specifying the metadata column to group cells by.
+Must be a valid column name in the Seurat object's metadata.}
 
-\item{assay}{A character string indicating the assay to use from the Seurat object. Default is `"RNA"`.}
+\item{assay}{A character string indicating which assay to use. Default is `"RNA"`.}
 
-\item{return_heatmap}{A logical value. If `TRUE`, the function returns a heatmap of the correlation matrix using the `pheatmap` package.
-If `FALSE`, the function returns the correlation matrix itself. Default is `TRUE`.}
+\item{return_heatmap}{A logical value. If `TRUE` (default), a heatmap of the
+correlation matrix is returned. If `FALSE`, the correlation matrix is returned.}
 }
 \value{
-If `return_heatmap = TRUE`, returns a heatmap of the correlation matrix. If `return_heatmap = TRUE`,
-  returns a matrix where each element represents the correlation between two groups' aggregated gene expression.
+A `pheatmap` object if `return_heatmap` is `TRUE`, or a correlation matrix if `FALSE`.
 }
 \description{
 This function aggregates gene expression data from a Seurat object based on a specified grouping factor
-(e.g., sample or cluster) and computes the correlation matrix between the groups. Optionally, it can return
-a heatmap visualization of the correlation matrix.
+(e.g., sample or cluster) and computes a correlation matrix between the groups.
+The function can return either the correlation matrix or a heatmap visualization.
 }
 \details{
-The function aggregates gene expression data based on the `group_by` parameter using the `AggregateExpression()`
-function from Seurat. It then computes the correlation matrix between groups using Pearson's correlation
-(`cor` function with `use = "complete.obs"` to handle missing values). If requested, the function will visualize the
-correlation matrix as a heatmap using the `pheatmap` package.
+This function first aggregates gene expression data for each group specified by the `group_by`
+parameter using `Seurat::AggregateExpression`. Then, it calculates the Pearson correlation
+between the aggregated expression profiles of the groups.
 }
 \examples{
 \dontrun{
-# Example usage:
-pbmc <- CreateSeuratObject(pbmc_data)
-correlation_matrix <- r2correlate_samples(seurat_obj = pbmc, group_by = "orig.ident", assay = "RNA", return_heatmap = FALSE)
+# To create a dummy Seurat object for testing
+pbmc_data <- matrix(rnorm(1000 * 20), nrow = 1000)
+rownames(pbmc_data) <- paste0("Gene-", 1:1000)
+colnames(pbmc_data) <- paste0("Cell-", 1:20)
+seurat_obj <- CreateSeuratObject(counts = pbmc_data)
+seurat_obj$orig.ident <- sample(c("SampleA", "SampleB"), 20, replace = TRUE)
 
-# Return a heatmap instead of the matrix
-r2correlate_samples(seurat_obj = pbmc, group_by = "orig.ident", return_heatmap = TRUE)
+# Get correlation matrix
+cor_matrix <- r2correlate_samples(seurat_obj, group_by = "orig.ident", return_heatmap = FALSE)
+
+# Get heatmap
+r2correlate_samples(seurat_obj, group_by = "orig.ident")
 }
 
 }
