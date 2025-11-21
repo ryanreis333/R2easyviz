@@ -102,9 +102,6 @@ DimPlot(pbmc, group.by = "celltype", label = T)
 ```{r}
 ######## FUNCTION #############
 
-
-
-
 ```
 
 
