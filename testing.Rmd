@@ -78,9 +78,6 @@ pbmc$celltype <- Idents(pbmc)
 ss <- subset(pbmc, nCount_RNA >1000)
 ```
 
-
-
-
 ```{r}
 library(Seurat)
 library(dplyr)
@@ -110,44 +107,47 @@ devtools::load_all()
 devtools::document()
 ```
 
+```{r}
+DimPlot(pbmc, group.by = "celltype")
+```
 
 
 ```{r}
 # test
-df.celltypes <- r2prop_df(pbmc, sample_col = "fake.sample", celltype_col = "celltype", group_col = "Dx")
 
-ggplot(df.celltypes,
-       aes(x = Dx, y = proportion, fill = Dx)) +
-  geom_boxplot(outlier.shape = NA, alpha = 0.8) +
-  geom_jitter(aes(color = Dx),
-              width = 0.15, size = 1.7, alpha = 0.8) +
-  facet_wrap(~ celltype, scales = "free_y", ncol = 3) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_bw() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    panel.grid.minor = element_blank()
-  )
+
 ```
 
 
-```{r}
-group_colors <- RColorBrewer::brewer.pal(n = 8, name = "Dark2")
-group_colors <- viridis::inferno(n = 8, direction = -1)
-```
+
+
+
+
+
+
+
+
+
+
 
 
 ```{r}
 # All functions:
-r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers, ncells = 100, group_by = "celltype",viridis_color = T, nfeatures = 5, arrange_by = "dif", barcode_column = "barcodes", group_colors = group_colors)
+r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers, ncells = 100, group_by = "celltype",viridis_color = T, nfeatures = 5, arrange_by = "dif", barcode_column = "barcodes")
 
 r2prop_plot(pbmc, group.by = "fake.sample", celltype = "celltype", reorder = T)
 
 ss <- r2sample_seurat(seurat_obj = pbmc, group_var = "fake.sample", n = 200, barcode_column = "barcodes")
 
-markers.ss <- r2subset_markers(markers.result = markers, arrange_by = "p_val_adj", nfeatures = 10, clusters = "cluster", order = "increasing")
+markers.ss <- r2subset_markers(markers.result = markers, arrange_by = "p_val_adj", nfeatures = 3, clusters = "cluster", order = "increasing")
 
 r2correlate_samples(seurat_obj = pbmc, group_by = "fake.sample", assay = "RNA", return_heatmap = T)
+
+df.celltypes <- r2prop_df(pbmc, sample_col = "fake.sample", celltype_col = "celltype", group_col = "Dx")
+ggplot(df.celltypes, aes(x = Dx, y = proportion, fill = Dx)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.8) +
+  geom_jitter(aes(color = Dx), width = 0.15, size = 1.7, alpha = 0.8) +
+  facet_wrap(~ celltype, scales = "free_y", ncol = 3)
 ```
 
 
