@@ -15,6 +15,11 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 
+```{r}
+devtools::install_github('immunogenomics/presto')
+```
+
+
 
 ```{r}
 library(Seurat)
@@ -23,6 +28,8 @@ library(ggplot2)
 library(stringr)
 library(RColorBrewer)
 library(viridis)
+library(presto)
+library(tidyr)
 ```
 
 
@@ -85,6 +92,7 @@ library(viridis)
 library(R2easyviz)
 devtools::load_all()
 ```
+
 ```{r}
 load("~/R.data/R2easyviz/save.RData")
 
@@ -100,13 +108,29 @@ DimPlot(pbmc, group.by = "celltype", label = T)
 ```
 
 
+```{r}
+devtools::load_all()
+devtools::document()
+```
+
+
 
 ```{r}
 # test
+df.celltypes <- r2prop_df(pbmc, sample_col = "fake.sample", celltype_col = "celltype", group_col = "Dx")
 
-
-
-
+ggplot(df.celltypes,
+       aes(x = Dx, y = proportion, fill = Dx)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.8) +
+  geom_jitter(aes(color = Dx),
+              width = 0.15, size = 1.7, alpha = 0.8) +
+  facet_wrap(~ celltype, scales = "free_y", ncol = 3) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.minor = element_blank()
+  )
 ```
 
 
