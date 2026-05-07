@@ -1,5 +1,7 @@
 # R2easyviz
 
+[![R-CMD-check](https://github.com/ryanreis333/R2easyviz/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ryanreis333/R2easyviz/actions/workflows/R-CMD-check.yaml)
+
 > Easy and quick functions for plotting single-cell data in Seurat.
 
 R2easyviz collects the kinds of plots and summaries I find myself making
