@@ -1,13 +1,16 @@
 #' Calculate Cell Type Proportions from Seurat Object
 #'
-#' This function accepts a Seurat object, extracts the metadata, and calculates the
-#' proportion of each cell type/cluster within each sample. It explicitly handles
-#' missing cell types by filling them with 0.
+#' This function accepts a Seurat object, extracts the metadata, and
+#' calculates the proportion of each cell type/cluster within each sample.
+#' It explicitly handles missing cell types by filling them with 0.
 #'
 #' @param seurat_obj A Seurat object containing single-cell data.
-#' @param sample_col String. The column name in \code{meta.data} representing the sample (e.g., "orig.ident").
-#' @param celltype_col String. The column name in \code{meta.data} representing the cell type or cluster (e.g., "seurat_clusters").
-#' @param group_col String (Optional). A column in \code{meta.data} to keep for grouping (e.g., "condition").
+#' @param sample_col String. The column name in \code{meta.data} representing
+#'   the sample (e.g., "orig.ident").
+#' @param celltype_col String. The column name in \code{meta.data}
+#'   representing the cell type or cluster (e.g., "seurat_clusters").
+#' @param group_col String (Optional). A column in \code{meta.data} to keep
+#'   for grouping (e.g., "condition").
 #'
 #' @return A dataframe in long format with columns:
 #' \itemize{

@@ -1,13 +1,28 @@
 #' Proportional Plot of Cell Types Across Samples
 #'
-#' This function generates a bar plot showing the proportion of each cell type or specified metadata category across different samples or conditions from a Seurat object. By default, it uses the identities of the cells and the "orig.ident" column for grouping and splitting. Optionally, you can reorder the samples based on the proportion of the most dominant cell type.
+#' This function generates a bar plot showing the proportion of each cell
+#' type or specified metadata category across different samples or
+#' conditions from a Seurat object. By default, it uses the identities of
+#' the cells and the "orig.ident" column for grouping and splitting.
+#' Optionally, you can reorder the samples based on the proportion of the
+#' most dominant cell type.
 #'
-#' @param seurat_object A Seurat object containing the data to be plotted. The object should include metadata columns corresponding to the cell types and sample identifiers.
-#' @param celltype A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses "celltype".
-#' @param group.by A string specifying the column name in the Seurat object's metadata that contains the sample identifiers or conditions by which the data should be split. The default is "orig.ident".
-#' @param reorder A logical value indicating whether to reorder the samples based on the proportion of the most dominant cell type. If `TRUE`, samples will be reordered; if `FALSE` (default), the original order will be used.
+#' @param seurat_object A Seurat object containing the data to be plotted.
+#'   The object should include metadata columns corresponding to the cell
+#'   types and sample identifiers.
+#' @param celltype A string specifying the column name in the Seurat
+#'   object's metadata that contains the cell type or other categorical
+#'   metadata to be plotted. By default, it uses "celltype".
+#' @param group.by A string specifying the column name in the Seurat
+#'   object's metadata that contains the sample identifiers or conditions
+#'   by which the data should be split. The default is "orig.ident".
+#' @param reorder A logical value indicating whether to reorder the samples
+#'   based on the proportion of the most dominant cell type. If `TRUE`,
+#'   samples will be reordered; if `FALSE` (default), the original order
+#'   will be used.
 #'
-#' @return A ggplot object that visualizes the proportion of each cell type or specified metadata category across the samples or conditions.
+#' @return A ggplot object that visualizes the proportion of each cell type
+#'   or specified metadata category across the samples or conditions.
 #' @export
 #'
 #' @examples
@@ -16,11 +31,19 @@
 #' r2prop_plot(seurat_object = seurat_obj)
 #'
 #' # Example with specified metadata columns
-#' r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", group.by = "sample_name")
+#' r2prop_plot(
+#'   seurat_object = seurat_obj,
+#'   celltype = "cell_type",
+#'   group.by = "sample_name"
+#' )
 #'
 #' # Example with reordered samples
-#' r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type",
-#'             group.by = "sample_name", reorder = TRUE)
+#' r2prop_plot(
+#'   seurat_object = seurat_obj,
+#'   celltype = "cell_type",
+#'   group.by = "sample_name",
+#'   reorder = TRUE
+#' )
 #' }
 #'
 #' @importFrom dplyr group_by summarise mutate arrange desc pull n

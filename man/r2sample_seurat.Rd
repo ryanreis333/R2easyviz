@@ -12,26 +12,37 @@ r2sample_seurat(
 )
 }
 \arguments{
-\item{seurat_obj}{A Seurat object containing the single-cell RNA-seq data.}
+\item{seurat_obj}{A Seurat object containing the single-cell RNA-seq
+data.}
 
-\item{group_var}{A character string representing the metadata column used to define the groups for sampling. Default is `"orig.ident"`.}
+\item{group_var}{A character string representing the metadata column
+used to define the groups for sampling. Default is `"orig.ident"`.}
 
-\item{n}{An integer specifying the number of cells to sample from each group. Default is 500.}
+\item{n}{An integer specifying the number of cells to sample from each
+group. Default is 500.}
 
-\item{barcode_column}{A character string representing the column in the Seurat metadata that contains the cell barcodes. Default is `"barcodes"`.}
+\item{barcode_column}{A character string representing the column in the
+Seurat metadata that contains the cell barcodes. Default is
+`"barcodes"`.}
 }
 \value{
-A downsampled Seurat object containing the specified number of cells from each group.
+A downsampled Seurat object containing the specified number of
+  cells from each group.
 }
 \description{
-`r2sample_seurat` is designed to downsample a Seurat object by randomly sampling
-a specified number of cells (`n`) from each group defined by a metadata variable (`group_var`).
-The function returns a new Seurat object containing only the sampled cells.
+`r2sample_seurat` is designed to downsample a Seurat object by randomly
+sampling a specified number of cells (`n`) from each group defined by a
+metadata variable (`group_var`). The function returns a new Seurat
+object containing only the sampled cells.
 }
 \examples{
 \dontrun{
 # Downsample 100 cells from each sample group defined by `orig.ident`
-pbmc.sample <- r2sample_seurat(seurat_obj = pbmc, group_var = "orig.ident", n = 100)
+pbmc.sample <- r2sample_seurat(
+  seurat_obj = pbmc,
+  group_var = "orig.ident",
+  n = 100
+)
 }
 
 }

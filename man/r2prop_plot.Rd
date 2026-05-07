@@ -12,19 +12,34 @@ r2prop_plot(
 )
 }
 \arguments{
-\item{seurat_object}{A Seurat object containing the data to be plotted. The object should include metadata columns corresponding to the cell types and sample identifiers.}
+\item{seurat_object}{A Seurat object containing the data to be plotted.
+The object should include metadata columns corresponding to the cell
+types and sample identifiers.}
 
-\item{celltype}{A string specifying the column name in the Seurat object's metadata that contains the cell type or other categorical metadata to be plotted. By default, it uses "celltype".}
+\item{celltype}{A string specifying the column name in the Seurat
+object's metadata that contains the cell type or other categorical
+metadata to be plotted. By default, it uses "celltype".}
 
-\item{group.by}{A string specifying the column name in the Seurat object's metadata that contains the sample identifiers or conditions by which the data should be split. The default is "orig.ident".}
+\item{group.by}{A string specifying the column name in the Seurat
+object's metadata that contains the sample identifiers or conditions
+by which the data should be split. The default is "orig.ident".}
 
-\item{reorder}{A logical value indicating whether to reorder the samples based on the proportion of the most dominant cell type. If `TRUE`, samples will be reordered; if `FALSE` (default), the original order will be used.}
+\item{reorder}{A logical value indicating whether to reorder the samples
+based on the proportion of the most dominant cell type. If `TRUE`,
+samples will be reordered; if `FALSE` (default), the original order
+will be used.}
 }
 \value{
-A ggplot object that visualizes the proportion of each cell type or specified metadata category across the samples or conditions.
+A ggplot object that visualizes the proportion of each cell type
+  or specified metadata category across the samples or conditions.
 }
 \description{
-This function generates a bar plot showing the proportion of each cell type or specified metadata category across different samples or conditions from a Seurat object. By default, it uses the identities of the cells and the "orig.ident" column for grouping and splitting. Optionally, you can reorder the samples based on the proportion of the most dominant cell type.
+This function generates a bar plot showing the proportion of each cell
+type or specified metadata category across different samples or
+conditions from a Seurat object. By default, it uses the identities of
+the cells and the "orig.ident" column for grouping and splitting.
+Optionally, you can reorder the samples based on the proportion of the
+most dominant cell type.
 }
 \examples{
 \dontrun{
@@ -32,11 +47,19 @@ This function generates a bar plot showing the proportion of each cell type or s
 r2prop_plot(seurat_object = seurat_obj)
 
 # Example with specified metadata columns
-r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type", group.by = "sample_name")
+r2prop_plot(
+  seurat_object = seurat_obj,
+  celltype = "cell_type",
+  group.by = "sample_name"
+)
 
 # Example with reordered samples
-r2prop_plot(seurat_object = seurat_obj, celltype = "cell_type",
-            group.by = "sample_name", reorder = TRUE)
+r2prop_plot(
+  seurat_object = seurat_obj,
+  celltype = "cell_type",
+  group.by = "sample_name",
+  reorder = TRUE
+)
 }
 
 }

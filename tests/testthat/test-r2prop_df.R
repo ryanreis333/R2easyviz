@@ -33,6 +33,6 @@ test_that("r2prop_df returns proportions that sum to 1 within each sample", {
 
   out <- r2prop_df(seu, sample_col = "sample", celltype_col = "celltype")
 
-  by_sample <- tapply(out$proportion, out$sample, sum)
-  expect_equal(unname(by_sample), rep(1, length(by_sample)))
+  by_sample <- as.numeric(tapply(out$proportion, out$sample, sum))
+  expect_equal(by_sample, rep(1, length(by_sample)))
 })

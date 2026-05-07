@@ -9,11 +9,14 @@ r2prop_df(seurat_obj, sample_col, celltype_col, group_col = NULL)
 \arguments{
 \item{seurat_obj}{A Seurat object containing single-cell data.}
 
-\item{sample_col}{String. The column name in \code{meta.data} representing the sample (e.g., "orig.ident").}
+\item{sample_col}{String. The column name in \code{meta.data} representing
+the sample (e.g., "orig.ident").}
 
-\item{celltype_col}{String. The column name in \code{meta.data} representing the cell type or cluster (e.g., "seurat_clusters").}
+\item{celltype_col}{String. The column name in \code{meta.data}
+representing the cell type or cluster (e.g., "seurat_clusters").}
 
-\item{group_col}{String (Optional). A column in \code{meta.data} to keep for grouping (e.g., "condition").}
+\item{group_col}{String (Optional). A column in \code{meta.data} to keep
+for grouping (e.g., "condition").}
 }
 \value{
 A dataframe in long format with columns:
@@ -26,9 +29,9 @@ A dataframe in long format with columns:
 }
 }
 \description{
-This function accepts a Seurat object, extracts the metadata, and calculates the
-proportion of each cell type/cluster within each sample. It explicitly handles
-missing cell types by filling them with 0.
+This function accepts a Seurat object, extracts the metadata, and
+calculates the proportion of each cell type/cluster within each sample.
+It explicitly handles missing cell types by filling them with 0.
 }
 \examples{
 \dontrun{
