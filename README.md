@@ -1,36 +1,67 @@
-# R2easyviz is a package intended to provide easy and quick functions for plotting single cell data in Seurat.
+# R2easyviz
 
-#### The movation for this package comes from types of plots that I create everyday while working with single cell projects. Rather than going through the work to manipulate the data of interest each time, R2easyviz provides an easy way to access data of interest, organize it in a meaningful way, and plot the results, all from the basic Seurat structure.
+> Easy and quick functions for plotting single-cell data in Seurat.
 
-## Installation
-#### Install Via GitHub
-
-```r
-install.packages("devtools")
-devtools::install_github("ryanreis333/R2easyviz")
-```
+R2easyviz collects the kinds of plots and summaries I find myself making
+every day on single-cell projects. Rather than re-deriving the same
+metadata wrangling each time, R2easyviz lets you point at a Seurat object
+and a few metadata columns and go straight to the figure.
 
 ![Logo](images/Example_images.png)
 
-#### The package relies on the ggplot2, dplyr, stringr, and Seurat packages.
+## Installation
 
-#### If there is any issues with loading these packages alongside R2easyviz, you can download them all by running the following:
+### From GitHub (users)
+
 ```r
-install.packages(c("ggplot2", "dplyr", "stringr", "Seurat"))
+# install.packages("remotes")
+remotes::install_github("ryanreis333/R2easyviz")
 ```
 
-#### Alternatively, you can download them each individually with the following:
+### Dependencies
+
+R2easyviz imports `dplyr`, `ggplot2`, `pheatmap`, `rlang`, `Seurat`,
+`stringr`, `tidyr`, and `viridis`. `remotes::install_github()` will pull
+these in automatically. If you'd rather install them up front:
+
 ```r
-install.packages("ggplot2")
-install.packages("dplyr")
-install.packages("stringr")
-install.packages("Seurat")
+install.packages(c(
+  "dplyr", "ggplot2", "pheatmap", "rlang",
+  "Seurat", "stringr", "tidyr", "viridis"
+))
 ```
 
-## Bug Reports/New Features
+## Local development
 
-#### If you run into any issues or bugs please submit a [GitHub issue](https://github.com/ryanreis333/R2easyviz/issues) with details of the issue.
+If you've cloned the repo and want to hack on the package locally:
 
-- If possible please include a [reproducible example](https://reprex.tidyverse.org/). 
+```r
+# install dev tools once
+install.packages(c("devtools", "roxygen2", "testthat"))
 
-#### [Pull Requests](https://github.com/ryanreis333/R2easyviz/pulls) are welcome for bug fixes, new features, or enhancements.
+# from the repo root, in R:
+devtools::load_all()       # load the package without installing
+devtools::document()       # regenerate NAMESPACE + man/ from roxygen comments
+devtools::test()           # run the testthat suite
+devtools::check()          # full R CMD check
+devtools::install()        # install into your library
+```
+
+The repo includes an `renv.lock` for reproducible development
+environments. If you use renv, run `renv::restore()` after cloning to
+pin the same package versions used during development. renv is **not**
+required to install or use the package — it's only for contributors
+who want the same toolchain.
+
+## Bug reports / feature requests
+
+If you run into any issues or bugs please open a
+[GitHub issue](https://github.com/ryanreis333/R2easyviz/issues) with
+details — a [reprex](https://reprex.tidyverse.org/) is hugely helpful.
+
+[Pull requests](https://github.com/ryanreis333/R2easyviz/pulls) are
+welcome for bug fixes, new features, or enhancements.
+
+## License
+
+GPL-3. See [LICENSE.md](LICENSE.md).
