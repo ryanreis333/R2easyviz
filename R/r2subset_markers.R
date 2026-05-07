@@ -16,16 +16,18 @@
 #' @export
 #'
 #' @examples
-#' # Subset the top 10 marker genes by differential expression from a result data frame
-#' top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "avg_logFC", nfeatures = 10)
+#' \dontrun{
+#' # Subset the top 10 marker genes by differential expression
+#' top_markers <- r2subset_markers(markers.result = markers_df,
+#'                                 arrange_by = "avg_logFC", nfeatures = 10)
 #'
 #' # Subset the top 5 marker genes based on p-value (increasing order)
-#' top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "p_val", nfeatures = 5, order = "increasing")
+#' top_markers <- r2subset_markers(markers.result = markers_df,
+#'                                 arrange_by = "p_val", nfeatures = 5,
+#'                                 order = "increasing")
+#' }
 #'
-#' # Subset the top 10 marker genes based on a custom 'dif' metric, calculated as pct.1 - pct.2
-#' top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "dif", nfeatures = 10)
-#'
-#' @importFrom dplyr group_by arrange slice_head mutate
+#' @importFrom dplyr group_by arrange slice_head mutate desc
 #' @importFrom rlang sym
 r2subset_markers <- function(markers.result, arrange_by = "dif", nfeatures = 10, clusters = "cluster", order = "decreasing") {
   # Validate order
@@ -37,7 +39,7 @@ r2subset_markers <- function(markers.result, arrange_by = "dif", nfeatures = 10,
   if (!(arrange_by %in% colnames(markers.result))) {
     if (arrange_by == "dif" && all(c("pct.1", "pct.2") %in% colnames(markers.result))) {
       markers.result <- markers.result %>%
-        mutate(dif = pct.1 - pct.2)
+        dplyr::mutate(dif = .data$pct.1 - .data$pct.2)
     } else {
       stop(paste("Column", arrange_by, "not found in 'markers.result'."))
     }
@@ -45,15 +47,15 @@ r2subset_markers <- function(markers.result, arrange_by = "dif", nfeatures = 10,
 
   # Perform grouping and sorting
   markers.subset <- markers.result %>%
-    group_by(!!sym(clusters)) %>%
+    dplyr::group_by(!!rlang::sym(clusters)) %>%
     {
       if (order == "decreasing") {
-        arrange(., desc(!!sym(arrange_by)))
+        dplyr::arrange(., dplyr::desc(!!rlang::sym(arrange_by)))
       } else {
-        arrange(., !!sym(arrange_by))
+        dplyr::arrange(., !!rlang::sym(arrange_by))
       }
     } %>%
-    slice_head(n = nfeatures)
+    dplyr::slice_head(n = nfeatures)
 
   return(markers.subset)
 }

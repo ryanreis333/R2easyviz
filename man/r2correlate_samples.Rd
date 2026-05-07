@@ -8,7 +8,7 @@ r2correlate_samples(
   seurat_obj,
   group_by = "orig.ident",
   assay = "RNA",
-  return_heatmap = T
+  return_heatmap = TRUE
 )
 }
 \arguments{
@@ -23,8 +23,9 @@ This can be a column like `"orig.ident"` or any other metadata column in `seurat
 If `FALSE`, the function returns the correlation matrix itself. Default is `TRUE`.}
 }
 \value{
-If `return_heatmap = TRUE`, returns a heatmap of the correlation matrix. If `return_heatmap = TRUE`,
-  returns a matrix where each element represents the correlation between two groups' aggregated gene expression.
+If `return_heatmap = TRUE`, returns a heatmap of the correlation matrix.
+  If `return_heatmap = FALSE`, returns a matrix where each element represents the correlation between
+  two groups' aggregated gene expression.
 }
 \description{
 This function aggregates gene expression data from a Seurat object based on a specified grouping factor

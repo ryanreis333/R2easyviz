@@ -29,10 +29,9 @@ a specified number of cells (`n`) from each group defined by a metadata variable
 The function returns a new Seurat object containing only the sampled cells.
 }
 \examples{
+\dontrun{
 # Downsample 100 cells from each sample group defined by `orig.ident`
-pbmc.sample <- r2_sample_seurat(seurat_obj = pbmc, group_var = "orig.ident", n = 100)
-
-# Downsample 200 cells using a custom grouping variable and barcode column
-seurat_downsampled <- r2sample_seurat(seurat_obj = my_seurat, group_var = "sample_id", n = 200, barcode_column = "cell_ids")
+pbmc.sample <- r2sample_seurat(seurat_obj = pbmc, group_var = "orig.ident", n = 100)
+}
 
 }

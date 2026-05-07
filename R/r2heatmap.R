@@ -11,22 +11,26 @@
 #' @param arrange_by A character string specifying the column name in `FindAllMarkersObj` used for ordering marker genes. If `"dif"`, and the `dif` column is not present, it will be calculated as the difference between `pct.1` and `pct.2`. Default is `"dif"`.
 #' @param barcode_column A character string specifying the column name in the metadata that contains barcode information. Default is `"barcodes"`.
 #' @param group_colors An optional named vector specifying manual colors for `group_by` groups. Names must match the group names exactly. Default is `NULL`.
-
+#'
 #' @return A `ggplot` object representing the heatmap of the selected marker genes.
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Generate a heatmap for the top 5 marker genes, using the Viridis color scale
-#' heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df, group_by = "celltype", nfeatures = 5)
+#' heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df,
+#'                           group_by = "celltype", nfeatures = 5)
 #'
 #' # Generate a heatmap for the top 10 marker genes, without using the Viridis color scale
-#' heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df, group_by = "celltype", nfeatures = 10, viridis_color = FALSE)
+#' heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df,
+#'                           group_by = "celltype", nfeatures = 10, viridis_color = FALSE)
+#' }
 #'
-#' @importFrom dplyr group_by slice_sample arrange desc mutate summarise pull
+#' @importFrom dplyr group_by slice_sample arrange desc mutate slice_head
 #' @importFrom rlang sym
 #' @importFrom Seurat ScaleData DoHeatmap
+#' @importFrom ggplot2 scale_fill_gradientn
 #' @importFrom viridis viridis
-#'
 r2heatmap <- function(seurat_obj,
                       FindAllMarkersObj,
                       group_by = "celltype",
@@ -45,20 +49,20 @@ r2heatmap <- function(seurat_obj,
   # Extract metadata and sample barcodes
   meta_data <- seurat_obj[[]]
   df_barcodes <- meta_data %>%
-    group_by(!!sym(group_by)) %>%
-    slice_sample(n = ncells, replace = FALSE)
+    dplyr::group_by(!!rlang::sym(group_by)) %>%
+    dplyr::slice_sample(n = ncells, replace = FALSE)
 
   # Check if barcode_column exists
   if (!(barcode_column %in% colnames(df_barcodes))) {
     warning(paste("Column", barcode_column, "not found in metadata."))
-    return(NULL)  # Exit the function if barcode_column is not found
+    return(NULL)
   }
 
   # Check if arrange_by exists and create 'dif' if needed
   if (!(arrange_by %in% colnames(FindAllMarkersObj))) {
     if (arrange_by == "dif" && all(c("pct.1", "pct.2") %in% colnames(FindAllMarkersObj))) {
       FindAllMarkersObj <- FindAllMarkersObj %>%
-        mutate(dif = pct.1 - pct.2)
+        dplyr::mutate(dif = .data$pct.1 - .data$pct.2)
       arrange_by <- "dif"
     } else {
       stop(paste("Column", arrange_by, "not found in 'FindAllMarkersObj' and cannot calculate 'dif' column."))
@@ -67,29 +71,29 @@ r2heatmap <- function(seurat_obj,
 
   # Subset marker genes
   markers.subset <- FindAllMarkersObj %>%
-    group_by(cluster) %>%
-    arrange(desc(!!sym(arrange_by))) %>%
-    slice_head(n = nfeatures)
+    dplyr::group_by(.data$cluster) %>%
+    dplyr::arrange(dplyr::desc(!!rlang::sym(arrange_by))) %>%
+    dplyr::slice_head(n = nfeatures)
 
   # Extract features for the heatmap
   heatmap.markers <- markers.subset$gene
 
   # Scale data for the selected features
-  seurat_obj <- ScaleData(seurat_obj, features = heatmap.markers)
+  seurat_obj <- Seurat::ScaleData(seurat_obj, features = heatmap.markers)
 
   # Create heatmap
-  plot <- DoHeatmap(
+  plot <- Seurat::DoHeatmap(
     object = seurat_obj,
     features = heatmap.markers,
     cells = df_barcodes[[barcode_column]],
     label = FALSE,
     group.by = group_by,
-    group.colors = group_colors  # <-- Pass group_colors directly here!
+    group.colors = group_colors
   )
 
   # Apply optional Viridis color scale for expression values
   if (viridis_color) {
-    plot <- plot + scale_fill_gradientn(colors = viridis(100))
+    plot <- plot + ggplot2::scale_fill_gradientn(colors = viridis::viridis(100))
   }
 
   return(plot)

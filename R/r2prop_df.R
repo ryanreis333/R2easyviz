@@ -17,9 +17,8 @@
 #'   \item \code{proportion}: Relative frequency (0-1)
 #'   \item The grouping column (if provided)
 #' }
-#' @import dplyr
-#' @import tidyr
-#' @import Seurat
+#' @importFrom dplyr group_by summarise mutate ungroup left_join select all_of distinct n
+#' @importFrom tidyr complete
 #' @export
 #'
 #' @examples
@@ -39,13 +38,7 @@ r2prop_df <- function(seurat_obj, sample_col, celltype_col, group_col = NULL) {
     stop("Error: The input 'seurat_obj' must be a Seurat object.")
   }
 
-  # Check if required packages are installed
-  if (!requireNamespace("dplyr", quietly = TRUE) || !requireNamespace("tidyr", quietly = TRUE)) {
-    stop("The packages 'dplyr' and 'tidyr' are required for this function.")
-  }
-
   # 2. Extract Metadata
-  # We use [[]] or @meta.data to get the dataframe
   meta_df <- seurat_obj@meta.data
 
   # Verify columns exist
@@ -57,13 +50,11 @@ r2prop_df <- function(seurat_obj, sample_col, celltype_col, group_col = NULL) {
   }
 
   # 3. Calculate Counts
-  # Group by sample and celltype to get raw counts
   counts_df <- meta_df %>%
     dplyr::group_by(.data[[sample_col]], .data[[celltype_col]]) %>%
-    dplyr::summarise(n = dplyr::n(), .groups = 'drop')
+    dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
-  # 4. Fill Zeros (Crucial Step)
-  # Use tidyr::complete to ensure samples with 0 cells of a specific type are recorded as 0
+  # 4. Fill Zeros — ensure samples with 0 cells of a specific type are recorded as 0
   full_df <- counts_df %>%
     tidyr::complete(.data[[sample_col]], .data[[celltype_col]], fill = list(n = 0))
 
@@ -71,8 +62,8 @@ r2prop_df <- function(seurat_obj, sample_col, celltype_col, group_col = NULL) {
   prop_df <- full_df %>%
     dplyr::group_by(.data[[sample_col]]) %>%
     dplyr::mutate(
-      total_cells = sum(n),
-      proportion = n / total_cells
+      total_cells = sum(.data$n),
+      proportion = .data$n / .data$total_cells
     ) %>%
     dplyr::ungroup()
 
@@ -82,13 +73,10 @@ r2prop_df <- function(seurat_obj, sample_col, celltype_col, group_col = NULL) {
       stop(paste("Column", group_col, "not found in Seurat metadata."))
     }
 
-    # Create a unique mapping of Sample -> Group
-    # We assume a sample ID corresponds to a single condition
     meta_map <- meta_df %>%
       dplyr::select(dplyr::all_of(c(sample_col, group_col))) %>%
       dplyr::distinct()
 
-    # Check for mapping issues (e.g., one sample ID having multiple conditions)
     if (any(duplicated(meta_map[[sample_col]]))) {
       warning(paste("The sample column", sample_col, "is not unique with respect to", group_col,
                     ". Some samples may have mixed conditions. Duplicate rows will be created."))

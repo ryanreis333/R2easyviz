@@ -1,17 +1,29 @@
 Package: R2easyviz
 Type: Package
-Title: Provides a host of functions to quickly and easily make seurat-compatible plots.
+Title: Quick and Easy Seurat-Compatible Plots
 Version: 0.1.0
-Author@R: person("Ryan", "Reis", email = "ryanreis333@gmail.com", role = c("aut", "cre"))
-Description: Provides a host of functions to quickly and easily make seurat-compatible plots. Choose
- your Seurat object and the metadata of interest, and plot away!
+Authors@R: person("Ryan", "Reis", email = "ryanreis333@gmail.com",
+    role = c("aut", "cre"))
+Description: Provides a host of functions to quickly and easily make
+    Seurat-compatible plots. Choose your Seurat object and the metadata
+    of interest, and plot away.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
-Depends: R (>= 4.0.0)
-Imports: 
-    Seurat,
+URL: https://github.com/ryanreis333/R2easyviz
+BugReports: https://github.com/ryanreis333/R2easyviz/issues
+Depends:
+    R (>= 4.0.0)
+Imports:
     dplyr,
     ggplot2,
-    stringr
-RoxygenNote: 7.3.2
+    pheatmap,
+    rlang,
+    Seurat,
+    stringr,
+    tidyr,
+    viridis
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
+RoxygenNote: 7.3.3

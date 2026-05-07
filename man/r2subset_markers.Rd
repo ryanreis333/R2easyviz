@@ -34,13 +34,15 @@ are present, it calculates `dif` as the difference between `pct.1` and `pct.2`.
 The function returns a subset of the top marker genes for each cluster.
 }
 \examples{
-# Subset the top 10 marker genes by differential expression from a result data frame
-top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "avg_logFC", nfeatures = 10)
+\dontrun{
+# Subset the top 10 marker genes by differential expression
+top_markers <- r2subset_markers(markers.result = markers_df,
+                                arrange_by = "avg_logFC", nfeatures = 10)
 
 # Subset the top 5 marker genes based on p-value (increasing order)
-top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "p_val", nfeatures = 5, order = "increasing")
-
-# Subset the top 10 marker genes based on a custom 'dif' metric, calculated as pct.1 - pct.2
-top_markers <- r2subset_markers(markers.result = markers_df, arrange_by = "dif", nfeatures = 10)
+top_markers <- r2subset_markers(markers.result = markers_df,
+                                arrange_by = "p_val", nfeatures = 5,
+                                order = "increasing")
+}
 
 }

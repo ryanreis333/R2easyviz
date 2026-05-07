@@ -42,10 +42,14 @@ A `ggplot` object representing the heatmap of the selected marker genes.
 The `r2heatmap` function creates a heatmap of the top marker genes for a given `Seurat` object. It allows you to visualize the expression of selected marker genes across cells, with options for color scaling and grouping. The function includes checks for column existence and dynamically adjusts the number of cells sampled based on the available data.
 }
 \examples{
+\dontrun{
 # Generate a heatmap for the top 5 marker genes, using the Viridis color scale
-heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df, group_by = "celltype", nfeatures = 5)
+heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df,
+                          group_by = "celltype", nfeatures = 5)
 
 # Generate a heatmap for the top 10 marker genes, without using the Viridis color scale
-heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df, group_by = "celltype", nfeatures = 10, viridis_color = FALSE)
+heatmap_plot <- r2heatmap(seurat_obj = pbmc, FindAllMarkersObj = markers_df,
+                          group_by = "celltype", nfeatures = 10, viridis_color = FALSE)
+}
 
 }

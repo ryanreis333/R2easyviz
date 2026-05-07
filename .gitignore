@@ -1,5 +1,17 @@
+# RStudio / R session
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-testing.lab.Rmd
+*.RData
+
+# Build artifacts
+*.Rcheck/
+*.tar.gz
+
+# OS
+.DS_Store
+
+# Scratch / dev data
+testing*.Rmd
+filtered_gene_bc_matrices/

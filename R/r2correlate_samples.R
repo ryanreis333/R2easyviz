@@ -11,8 +11,9 @@
 #' @param return_heatmap A logical value. If `TRUE`, the function returns a heatmap of the correlation matrix using the `pheatmap` package.
 #'   If `FALSE`, the function returns the correlation matrix itself. Default is `TRUE`.
 #'
-#' @return If `return_heatmap = TRUE`, returns a heatmap of the correlation matrix. If `return_heatmap = TRUE`,
-#'   returns a matrix where each element represents the correlation between two groups' aggregated gene expression.
+#' @return If `return_heatmap = TRUE`, returns a heatmap of the correlation matrix.
+#'   If `return_heatmap = FALSE`, returns a matrix where each element represents the correlation between
+#'   two groups' aggregated gene expression.
 #'
 #' @details The function aggregates gene expression data based on the `group_by` parameter using the `AggregateExpression()`
 #' function from Seurat. It then computes the correlation matrix between groups using Pearson's correlation
@@ -29,31 +30,32 @@
 #' r2correlate_samples(seurat_obj = pbmc, group_by = "orig.ident", return_heatmap = TRUE)
 #' }
 #'
-#' @import Seurat pheatmap
+#' @importFrom Seurat AggregateExpression GetAssayData
+#' @importFrom stats cor
 #' @export
-r2correlate_samples <- function(seurat_obj, group_by = "orig.ident", assay = "RNA", return_heatmap = T){
+r2correlate_samples <- function(seurat_obj, group_by = "orig.ident", assay = "RNA", return_heatmap = TRUE) {
 
   # Aggregate expression based on group_by and assay
-  agg.seurat <- AggregateExpression(object = seurat_obj,
-                                    group.by = group_by,
-                                    return.seurat = TRUE,
-                                    assays = assay)
+  agg.seurat <- Seurat::AggregateExpression(object = seurat_obj,
+                                            group.by = group_by,
+                                            return.seurat = TRUE,
+                                            assays = assay)
 
   # Assign column names based on the group_by metadata
-  colnames(agg.seurat) <- unique(seurat_obj[[group_by]][,1])
+  colnames(agg.seurat) <- unique(seurat_obj[[group_by]][, 1])
 
-  # Extract the aggregated expression matrix
-  mat <- GetAssayData(agg.seurat, slot = "data")
+  # Extract the aggregated expression matrix (Seurat v5 uses `layer`, older versions used `slot`)
+  mat <- Seurat::GetAssayData(agg.seurat, layer = "data")
 
   # Initialize a correlation matrix
   cor_matrix <- matrix(nrow = ncol(mat), ncol = ncol(mat))
 
   # Compute correlation matrix
-  for(i in 1:ncol(mat)){
-    for (j in 1:ncol(mat)) {
+  for (i in seq_len(ncol(mat))) {
+    for (j in seq_len(ncol(mat))) {
       col1 <- mat[, i]
       col2 <- mat[, j]
-      cor_matrix[i, j] <- cor(col1, col2, use = "complete.obs")
+      cor_matrix[i, j] <- stats::cor(col1, col2, use = "complete.obs")
     }
   }
 
@@ -62,7 +64,7 @@ r2correlate_samples <- function(seurat_obj, group_by = "orig.ident", assay = "RN
   rownames(cor_matrix) <- colnames(agg.seurat)
 
   # Return heatmap if requested
-  if(return_heatmap){
+  if (return_heatmap) {
     return(pheatmap::pheatmap(cor_matrix, show_rownames = TRUE, show_colnames = TRUE))
   }
 

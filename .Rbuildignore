@@ -2,3 +2,12 @@
 ^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.github$
+^\.gitignore$
+^\.gitattributes$
+^README\.Rmd$
+^images$
+^testing.*\.Rmd$
+^filtered_gene_bc_matrices$
+^.*\.RData$
+^LICENSE\.md$
